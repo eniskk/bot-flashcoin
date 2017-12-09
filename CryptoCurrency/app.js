@@ -89,7 +89,7 @@ function sortNumber(a, b) {
 }
 
 function status() {
-
+  client.user.setGame('Write "/crypto" to get started!')
 }
 
 client.on('message', msg => {
