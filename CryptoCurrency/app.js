@@ -14,7 +14,8 @@ var schedule = require('node-schedule');
     Defining files
 */
 
-var file = './currencies.json';
+var currencydb = './currencies.json';
+var serverdb = './servers.json';
 var credentials = require('./credentials.json');
 
 
@@ -48,7 +49,7 @@ function allCrypto(translate, limit) {
     var info = JSON.parse(body);
 
     // Reading in current currencies
-    var currencies = jsonfile.readFileSync(file);
+    var currencies = jsonfile.readFileSync(currencydb);
 
     info.forEach(function(entry) {
 
@@ -80,7 +81,7 @@ function allCrypto(translate, limit) {
       }]
 
       // Writing out updated currencies
-      jsonfile.writeFileSync(file, currencies, {
+      jsonfile.writeFileSync(currencydb, currencies, {
         spaces: 2
       });
 
@@ -93,9 +94,9 @@ function allCrypto(translate, limit) {
 
 function sortCrypto() {
 
-  var currencies = jsonfile.readFileSync(file);
+  var currencies = jsonfile.readFileSync(currencydb);
   currencies.sort(sortNumber);
-  jsonfile.writeFileSync(file, currencies, {
+  jsonfile.writeFileSync(currencydb, currencies, {
     spaces: 2
   });
 
@@ -123,7 +124,7 @@ client.on('message', msg => {
 
   if (msg.content.toLowerCase() == prefix + "crypto") {
 
-    currencies = jsonfile.readFileSync(file);
+    currencies = jsonfile.readFileSync(currencydb);
     currencies.forEach(function(entry) {
 
       var emoji;
@@ -171,7 +172,49 @@ client.on('message', msg => {
 
     currencies_converted = [];
 
-  }
+  };
+
+  if (msg.content.toLowerCase().startsWith(prefix + "setcurrency")) {
+    var split = msg.content.split(' ');
+
+    // Defining the specified currency
+    var currency = split[1];
+
+    if (currency) { // Checking if a currency has been specified (true if currency is not null, undefined, 0, NaN...)
+
+      var currency_converted = currency.toUpperCase(); // Converting the currency to all uppercase
+      msg.channel.send('This server\'s default currency has been set to **' + currency_converted + '**!');
+
+      var servers = jsonfile.readFileSync(serverdb);
+
+      var serverId = msg.guild.id
+
+      // Removing old server settings if there are any
+      var temp_servers = [];
+      for (var i in servers)
+        if (servers[i].serverId != msg.guild.id)
+          temp_servers[temp_servers.length] = servers[i];
+      servers = temp_servers;
+
+      // Adding new server settings
+      servers = [...servers, {
+        serverId,
+        currency_converted
+      }]
+
+      // Writing out the new settings
+      jsonfile.writeFileSync(serverdb, servers, {
+        spaces: 2
+      });
+
+    } else { // If no currency has been specified
+      msg.channel.send('**You have to specify a currency!**\nType "/currencies" for a list of all available currencies!');
+    }
+  };
+
+  if (msg.content.toLowerCase() == prefix + "currencies") {
+    msg.channel.send('Here\'s a list of all available currencies:\n```USD, DKK, JPY, PLN, AUD, EUR, KRW, RUB, BRL, GBP, MXN, SEK, CAD, HKD, MYR, SGD, CHF, HUF, NOK, THB, CLP, CLP, IDR, NZD, TRY, CNY, ILS, PHP, TWD, CZK, INR, PKR and ZAR```');
+  };
 
 });
 
