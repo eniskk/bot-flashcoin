@@ -1,0 +1,42 @@
+[
+  {
+    "name": "BTC",
+    "translate": "EUR",
+    "amount": 12047.35
+  },
+  {
+    "name": "DASH",
+    "translate": "EUR",
+    "amount": 619.54
+  },
+  {
+    "name": "ETH",
+    "translate": "EUR",
+    "amount": 400.46
+  },
+  {
+    "name": "XMR",
+    "translate": "EUR",
+    "amount": 217.03
+  },
+  {
+    "name": "LTC",
+    "translate": "EUR",
+    "amount": 125.79
+  },
+  {
+    "name": "ETC",
+    "translate": "EUR",
+    "amount": 23.48
+  },
+  {
+    "name": "STRAT",
+    "translate": "EUR",
+    "amount": 7.51
+  },
+  {
+    "name": "MAID",
+    "translate": "EUR",
+    "amount": 0.4013
+  }
+]
