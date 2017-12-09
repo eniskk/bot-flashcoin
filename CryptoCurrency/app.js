@@ -27,6 +27,7 @@ var prefix = '/';
 var delay = 60000;
 var currencies;
 var currencies_converted = [];
+var found;
 
 
 /*
@@ -124,54 +125,131 @@ client.on('message', msg => {
 
   if (msg.content.toLowerCase() == prefix + "crypto") {
 
-    currencies = jsonfile.readFileSync(currencydb);
-    currencies.forEach(function(entry) {
+    // Checking server database if there's a special currency set for the server
+    servers = jsonfile.readFileSync(serverdb);
 
-      var emoji;
+    for (var i in servers) {
+      if (servers[i].serverId == msg.guild.id) {
+        // If there was one found, we're sending a special message
 
-      if (entry.perc_24h >= 0) {
-        emoji = ":chart_with_upwards_trend:";
-        indicator = '+';
+        // We take the currency out of the serverdb
+        var translate = servers[i].currency_converted;
+
+        // we put the currency to lowercase in order for the api to recognize it
+        var translated_currency = "price_" + translate.toLowerCase();
+
+        var requestMap = 'https://api.coinmarketcap.com/v1/ticker/?convert=' + translate + '&limit=' + limit;
+        console.log(requestMap)
+        request(requestMap, function(error, response, body) {
+
+          var info = JSON.parse(body);
+          console.log(info);
+          var currencies_special = info;
+
+          info.forEach(function(entry) {
+
+            var emoji;
+
+            if (entry.percent_change_24h >= 0) {
+              emoji = ":chart_with_upwards_trend:";
+              indicator = '+';
+            } else {
+              emoji = ":chart_with_downwards_trend:";
+              indicator = '';
+            }
+
+            var amount_rounded = Math.round(entry[translated_currency] * 100) / 100;
+
+            currencies_converted.push({
+              name: emoji + ' __' + entry.name + ':__',
+              value: 'Current exchange for ' + entry.symbol + ':\n**' + entry[translated_currency] + ' ' + translate + '** (' + indicator +  entry.percent_change_24h + '% in 24h)',
+              inline: true
+            });
+
+          }); // End ForEach
+
+          var embed = {
+            color: 0xFFFFFF,
+            // author: {
+            //   name: "Current Crypto Currency Exchange Rates",
+            //   icon_url: 'https://i.4da.ms/Bitcoin-icon.png'
+            // },
+            title: "Crypto Currency Exchange Rates",
+            url: "https://crypto.4da.ms/",
+            description: '\n» Data gets updated **every minute**.\n» Source code and more: **[crypto.4da.ms](https://crypto.4da.ms)**!',
+            footer: {
+              text: 'Via "/crypto" | CryptoCurrency Bot @ ' + moment().format('LTS'),
+              icon_url: client.user.avatarURL
+            },
+            fields: currencies_converted,
+          }
+
+          console.log('| Crypto status requested                            |');
+          console.log('|----------------------------------------------------|');
+
+          msg.channel.send('[<@' + msg.author.id + '>] Here are your requested exchange rates!')
+          msg.channel.send({
+            embed
+          });
+
+          currencies_converted = [];
+        });
+
       } else {
-        emoji = ":chart_with_downwards_trend:";
-        indicator = '';
+        // If there wasn't anything found, we're gonna send a default "EUR" message
+
+        // Here follows the default process of sending a message
+        currencies = jsonfile.readFileSync(currencydb);
+        currencies.forEach(function(entry) {
+
+          var emoji;
+
+          if (entry.perc_24h >= 0) {
+            emoji = ":chart_with_upwards_trend:";
+            indicator = '+';
+          } else {
+            emoji = ":chart_with_downwards_trend:";
+            indicator = '';
+          }
+
+          currencies_converted.push({
+            name: emoji + ' __' + entry.name + ':__',
+            value: 'Current exchange for ' + entry.symbol + ':\n**' + entry.amount + ' ' + entry.translate + '** (' + indicator +  entry.perc_24h + '% in 24h)',
+            inline: true
+
+          });
+
+        });
+
+        var embed = {
+          color: 0xFFFFFF,
+          // author: {
+          //   name: "Current Crypto Currency Exchange Rates",
+          //   icon_url: 'https://i.4da.ms/Bitcoin-icon.png'
+          // },
+          title: "Crypto Currency Exchange Rates",
+          url: "https://crypto.4da.ms/",
+          description: '\n» Data gets updated **every minute**.\n» Source code and more: **[crypto.4da.ms](https://crypto.4da.ms)**!',
+          footer: {
+            text: 'Via "/crypto" | CryptoCurrency Bot @ ' + moment().format('LTS'),
+            icon_url: client.user.avatarURL
+          },
+          fields: currencies_converted,
+        }
+
+        console.log('| Crypto status requested                            |');
+        console.log('|----------------------------------------------------|');
+
+        msg.channel.send('[<@' + msg.author.id + '>] Here are your requested exchange rates!')
+        msg.channel.send({
+          embed
+        });
+
+        currencies_converted = [];
+
       }
 
-      currencies_converted.push({
-        name: emoji + ' __' + entry.name + ':__',
-        value: 'Current exchange for ' + entry.symbol + ':\n**' + entry.amount + ' ' + entry.translate + '** (' + indicator +  entry.perc_24h + '% in 24h)',
-        inline: true
-
-      });
-
-    });
-
-    var embed = {
-      color: 0xFFFFFF,
-      // author: {
-      //   name: "Current Crypto Currency Exchange Rates",
-      //   icon_url: 'https://i.4da.ms/Bitcoin-icon.png'
-      // },
-      title: "Crypto Currency Exchange Rates",
-      url: "https://crypto.4da.ms/",
-      description: '\n» Data gets updated **every minute**.\n» Source code and more: **[crypto.4da.ms](https://crypto.4da.ms)**!',
-      footer: {
-        text: 'Via "/crypto" | CryptoCurrency Bot @ ' + moment().format('LTS'),
-        icon_url: client.user.avatarURL
-      },
-      fields: currencies_converted,
     }
-
-    console.log('| Crypto status requested                            |');
-    console.log('|----------------------------------------------------|');
-
-    msg.channel.send('[<@' + msg.author.id + '>] Here are your requested exchange rates!')
-    msg.channel.send({
-      embed
-    });
-
-    currencies_converted = [];
-
   };
 
   if (msg.content.toLowerCase().startsWith(prefix + "setcurrency")) {
