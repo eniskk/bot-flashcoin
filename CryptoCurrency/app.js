@@ -7,6 +7,7 @@ var client = new Discord.Client();
 var moment = require('moment');
 var jsonfile = require('jsonfile');
 var request = require('request');
+var schedule = require('node-schedule');
 
 
 /*
@@ -92,6 +93,12 @@ function status() {
   client.user.setGame('Write "/crypto" to get started!')
 }
 
+var j = schedule.scheduleJob('00 * * * * *', function() {
+  // Refreshing all crypto information exactly on the minute
+  // in order to sync with the API
+  allCrypto();
+});
+
 client.on('message', msg => {
 
   if (msg.author.id == "329331452040708096") {
@@ -101,50 +108,52 @@ client.on('message', msg => {
   if (msg.content.toLowerCase() == prefix + "crypto") {
 
     currencies = jsonfile.readFileSync(file);
-  currencies.forEach(function(entry) {
+    currencies.forEach(function(entry) {
 
-    // var emoji;
-    //
-    // var cryptoOld = entry.amount
-    //
-    // var cryptoNew;
-    //
-    // if (cryptoNew >= cryptoOld) {
-    //   emoji = ":chart_with_upwards_trend:";
-    // }
-    //    // if (cryptoNew < cryptoOld) {
-    //   emoji = ":chart_with_downwards_trend:";
-    // }
+      // var emoji;
+      //
+      // var cryptoOld = entry.amount
+      //
+      // var cryptoNew;
+      //
+      // if (cryptoNew >= cryptoOld) {
+      //   emoji = ":chart_with_upwards_trend:";
+      // }
+      //    // if (cryptoNew < cryptoOld) {
+      //   emoji = ":chart_with_downwards_trend:";
+      // }
 
-    currencies_converted.push({
-      name: ":chart_with_upwards_trend:" + ' __' + entry.name + ':__',
-      value: 'Current exchange rate for ' + entry.name + '\n**' + entry.amount + ' ' + entry.translate + '!**',
-      inline: true
+      currencies_converted.push({
+        name: ":chart_with_upwards_trend:" + ' __' + entry.name + ':__',
+        value: 'Current exchange rate for ' + entry.name + '\n**' + entry.amount + ' ' + entry.translate + '!**',
+        inline: true
+
+      });
 
     });
 
-  });
+    var embed = {
+      color: 0xFFFFFF,
+      author: {
+        name: "Current Crypto Currency Exchange Rates",
+        icon_url: 'https://i.4da.ms/Bitcoin-icon.png'
+      },
+      //title: "",
+      description: '\n» Data gets updated **every minute**.\n» Source code available on **[GitHub](https://github.com/4dams)**!',
+      footer: {
+        text: 'Source code on GitHub.com/4dams | CryptoCurrency Bot @ ' + moment().format('LTS'),
+        icon_url: client.user.avatarURL
+      },
+      fields: currencies_converted,
+    }
 
-  var embed = {
-    color: 0xFFFFFF,
-    author: {
-      name: "Current Crypto Currency Exchange Rates",
-      icon_url: 'https://i.4da.ms/Bitcoin-icon.png'
-    },
-    //title: "",
-    description: '\n» Data gets updated **every minute**.\n» Source code available on **[GitHub](https://github.com/4dams)**!',
-    footer: {
-      text: 'Source code on GitHub.com/4dams | CryptoCurrency Bot @ ' + moment().format('LTS'),
-      icon_url: client.user.avatarURL
-    },
-    fields: currencies_converted,
-  }
+    console.log('Crypto Currency Stats requested.')
 
-  console.log('Crypto Currency Stats requested.')
+    msg.channel.send({
+      embed
+    });
 
-  msg.channel.send({embed});
-
-  currencies_converted = [];
+    currencies_converted = [];
 
   }
 
