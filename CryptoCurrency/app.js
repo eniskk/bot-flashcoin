@@ -158,7 +158,6 @@ client.on('message', msg => {
       fields: currencies_converted,
     }
 
-    console.log('|----------------------------------------------------|');
     console.log('| Crypto status requested                            |');
     console.log('|----------------------------------------------------|');
 
