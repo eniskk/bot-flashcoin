@@ -139,11 +139,9 @@ client.on('message', msg => {
         var translated_currency = "price_" + translate.toLowerCase();
 
         var requestMap = 'https://api.coinmarketcap.com/v1/ticker/?convert=' + translate + '&limit=' + limit;
-        console.log(requestMap)
         request(requestMap, function(error, response, body) {
 
           var info = JSON.parse(body);
-          console.log(info);
           var currencies_special = info;
 
           info.forEach(function(entry) {
