@@ -90,7 +90,7 @@ function sortNumber(a, b) {
 }
 
 function status() {
-  client.user.setGame('Write "/crypto" to get started!')
+  //client.user.setGame('Write "/crypto" to get started!');
 }
 
 var j = schedule.scheduleJob('00 * * * * *', function() {
@@ -160,7 +160,6 @@ client.on('message', msg => {
 });
 
 client.on('ready', function() {
-  status(); // Sets the bot status
   console.log('|----------------------------------------------------|');
   console.log('|                                                    |');
   console.log('|   CryptoCurrency(-Bot) online and ready to use!    |');
@@ -170,6 +169,8 @@ client.on('ready', function() {
   console.log('|----------------------------------------------------|');
   console.log('| Autoupdater requested.                             |');
   console.log('|----------------------------------------------------|')
+
+  status();
 
   setInterval(function() {
     status();
