@@ -66,7 +66,7 @@ function allCrypto(translate, limit) {
       var perc_1h = entry.percent_change_1h;
       var perc_24h = entry.percent_change_24h;
       var perc_7d = entry.percent_change_7d;
-      var amount = entry.price_eur;
+      var amount = Math.round(entry.price_eur * 100) / 100;
 
       currencies = [...currencies, {
         name,
