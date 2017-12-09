@@ -1,42 +1,114 @@
 [
   {
-    "name": "BTC",
-    "translate": "EUR",
-    "amount": 12047.35
+    "name": "Bitcoin",
+    "symbol": "BTC",
+    "rank": "1",
+    "perc_1h": "-1.84",
+    "perc_24h": "-9.84",
+    "perc_7d": "27.71"
   },
   {
-    "name": "DASH",
-    "translate": "EUR",
-    "amount": 619.54
+    "name": "Stellar Lumens",
+    "symbol": "XLM",
+    "rank": "14",
+    "perc_1h": "-9.37",
+    "perc_24h": "-7.99",
+    "perc_7d": "33.29"
   },
   {
-    "name": "ETH",
-    "translate": "EUR",
-    "amount": 400.46
+    "name": "Bitcoin Cash",
+    "symbol": "BCH",
+    "rank": "3",
+    "perc_1h": "-6.11",
+    "perc_24h": "-8.15",
+    "perc_7d": "-6.11"
   },
   {
-    "name": "XMR",
-    "translate": "EUR",
-    "amount": 217.03
+    "name": "IOTA",
+    "symbol": "MIOTA",
+    "rank": "4",
+    "perc_1h": "-0.57",
+    "perc_24h": "0.11",
+    "perc_7d": "213.52"
   },
   {
-    "name": "LTC",
-    "translate": "EUR",
-    "amount": 125.79
+    "name": "Ripple",
+    "symbol": "XRP",
+    "rank": "5",
+    "perc_1h": "-2.33",
+    "perc_24h": "-4.72",
+    "perc_7d": "-5.42"
   },
   {
-    "name": "ETC",
-    "translate": "EUR",
-    "amount": 23.48
+    "name": "Litecoin",
+    "symbol": "LTC",
+    "rank": "6",
+    "perc_1h": "-4.71",
+    "perc_24h": "13.14",
+    "perc_7d": "41.14"
   },
   {
-    "name": "STRAT",
-    "translate": "EUR",
-    "amount": 7.51
+    "name": "Dash",
+    "symbol": "DASH",
+    "rank": "7",
+    "perc_1h": "-3.9",
+    "perc_24h": "-6.09",
+    "perc_7d": "-9.0"
   },
   {
-    "name": "MAID",
-    "translate": "EUR",
-    "amount": 0.4013
+    "name": "Ethereum",
+    "symbol": "ETH",
+    "rank": "2",
+    "perc_1h": "-5.6",
+    "perc_24h": "-0.34",
+    "perc_7d": "-0.81"
+  },
+  {
+    "name": "Monero",
+    "symbol": "XMR",
+    "rank": "9",
+    "perc_1h": "-5.2",
+    "perc_24h": "-9.05",
+    "perc_7d": "32.6"
+  },
+  {
+    "name": "NEM",
+    "symbol": "XEM",
+    "rank": "10",
+    "perc_1h": "-3.16",
+    "perc_24h": "21.17",
+    "perc_7d": "61.19"
+  },
+  {
+    "name": "Cardano",
+    "symbol": "ADA",
+    "rank": "11",
+    "perc_1h": "-6.13",
+    "perc_24h": "4.04",
+    "perc_7d": "-12.45"
+  },
+  {
+    "name": "Ethereum Classic",
+    "symbol": "ETC",
+    "rank": "12",
+    "perc_1h": "-3.57",
+    "perc_24h": "-3.44",
+    "perc_7d": "-11.01"
+  },
+  {
+    "name": "NEO",
+    "symbol": "NEO",
+    "rank": "13",
+    "perc_1h": "-4.76",
+    "perc_24h": "-3.58",
+    "perc_7d": "-1.05"
+  },
+  {
+    "name": "Bitcoin Gold",
+    "symbol": "BTG",
+    "rank": "8",
+    "perc_1h": "-2.68",
+    "perc_24h": "-8.96",
+    "perc_7d": "-20.74"
   }
 ]

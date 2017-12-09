@@ -29,15 +29,62 @@ var currencies_converted = [];
 
 
 /*
+    API Request-Map
+*/
+
+//var requestTemplate = 'https://api.coinmarketcap.com/v1/ticker/?convert=' + translate + '&limit=' + limit // Default: 14
+
+
+/*
     Beginning of the actual script
 */
 
 allCrypto();
 
 function allCrypto() {
-  var currencies = jsonfile.readFileSync(file);
-  currencies.forEach(function(entry) {
-    requestCrypto(entry.name, entry.translate, entry.amount);
+  var requestMap = 'https://api.coinmarketcap.com/v1/ticker/?convert=' + "EUR" + '&limit=' + "14";
+  request(requestMap, function(error, response, body) {
+    var info = JSON.parse(body);
+
+    // Reading in current currencies
+    var currencies = jsonfile.readFileSync(file);
+
+    info.forEach(function(entry) {
+
+      // Removing previous crypto data from list
+      var temp_currencies = [];
+      for (var i in currencies)
+        if (currencies[i].name != entry.name)
+          temp_currencies[temp_currencies.length] = currencies[i];
+      currencies = temp_currencies;
+
+      // Adding new crypto data to list
+      var name = entry.name;
+      var symbol = entry.symbol;
+      var rank = entry.rank;
+      var perc_1h = entry.percent_change_1h;
+      var perc_24h = entry.percent_change_24h;
+      var perc_7d = entry.percent_change_7d;
+      var amount = info.price_eur;
+      currencies = [...currencies, {
+        name,
+        symbol,
+        rank,
+        perc_1h,
+        perc_24h,
+        perc_7d,
+        amount
+      }]
+
+      // Writing out updated currencies
+      jsonfile.writeFileSync(file, currencies, {
+        spaces: 2
+      });
+
+    })
+
+    //console.log(crypto + ': ' + info[translate] + " " + translate)
+    sortCrypto();
   });
 }
 
@@ -91,6 +138,7 @@ function sortNumber(a, b) {
 
 function status() {
   //client.user.setGame('Write "/crypto" to get started!');
+
 }
 
 var j = schedule.scheduleJob('00 * * * * *', function() {
