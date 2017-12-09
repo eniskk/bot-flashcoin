@@ -128,15 +128,17 @@ client.on('message', msg => {
 
       var emoji;
 
-      if (entry.perc_1h >= 0) {
+      if (entry.perc_24h >= 0) {
         emoji = ":chart_with_upwards_trend:";
+        indicator = '+';
       } else {
         emoji = ":chart_with_downwards_trend:";
+        indicator = '';
       }
 
       currencies_converted.push({
         name: emoji + ' __' + entry.name + ':__',
-        value: 'Current exchange for ' + entry.symbol + ':\n**' + entry.amount + ' ' + entry.translate + '** (' + entry.perc_1h + '% last hour)',
+        value: 'Current exchange for ' + entry.symbol + ':\n**' + entry.amount + ' ' + entry.translate + '** (' + indicator +  entry.perc_24h + '% last day)',
         inline: true
 
       });
