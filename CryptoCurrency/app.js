@@ -136,7 +136,7 @@ client.on('message', msg => {
 
       currencies_converted.push({
         name: emoji + ' __' + entry.name + ':__',
-        value: 'Current exchange rate for ' + entry.symbol + '\n**' + entry.amount + ' ' + entry.translate + '!**',
+        value: 'Current exchange for ' + entry.symbol + ':\n**' + entry.amount + ' ' + entry.translate + '** (' + entry.perc_1h + '% last hour)',
         inline: true
 
       });
@@ -158,7 +158,9 @@ client.on('message', msg => {
       fields: currencies_converted,
     }
 
-    console.log('Crypto Currency Stats requested.')
+    console.log('|----------------------------------------------------|');
+    console.log('| Crypto status requested                            |');
+    console.log('|----------------------------------------------------|');
 
     msg.channel.send({
       embed
@@ -174,12 +176,12 @@ client.on('ready', function() {
   console.log('|----------------------------------------------------|');
   console.log('|                                                    |');
   console.log('|   CryptoCurrency(-Bot) online and ready to use!    |');
-  console.log('|         - Current Verison: 2.6 by 4dams -          |');
-  console.log('|                Contact: 4dams#3082                 |');
+  console.log('|         - Current Verison: 3.0 by 4dams -          |');
+  console.log('|                Contact: 4dams#0001                 |');
   console.log('|                                                    |');
   console.log('|----------------------------------------------------|');
-  console.log('| Autoupdater requested.                             |');
-  console.log('|----------------------------------------------------|')
+  console.log('| Currencies updating every minute.                  |');
+  console.log('|----------------------------------------------------|');
 
   status();
 
