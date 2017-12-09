@@ -14,13 +14,14 @@ var request = require('request');
 */
 
 var file = './currencies.json';
-var credentials = './credentials.json';
+var credentials = require('./credentials.json');
 
 
 /*
     Setting required variables
 */
 
+var prefix = '/';
 var delay = 60000;
 var currencies;
 var currencies_converted = [];
