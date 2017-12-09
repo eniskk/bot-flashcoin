@@ -65,7 +65,8 @@ function allCrypto() {
       var perc_1h = entry.percent_change_1h;
       var perc_24h = entry.percent_change_24h;
       var perc_7d = entry.percent_change_7d;
-      var amount = info.price_eur;
+      var amount = entry.price_eur;
+
       currencies = [...currencies, {
         name,
         symbol,
