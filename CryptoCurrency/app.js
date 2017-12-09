@@ -29,20 +29,21 @@ var currencies_converted = [];
 
 
 /*
-    API Request-Map
+    Request arguments (temporarily stored here)
 */
 
-//var requestTemplate = 'https://api.coinmarketcap.com/v1/ticker/?convert=' + translate + '&limit=' + limit // Default: 14
+var translate = "EUR";
+var limit = "10";
 
 
 /*
     Beginning of the actual script
 */
 
-allCrypto();
+allCrypto(translate, limit);
 
-function allCrypto() {
-  var requestMap = 'https://api.coinmarketcap.com/v1/ticker/?convert=' + "EUR" + '&limit=' + "14";
+function allCrypto(translate, limit) {
+  var requestMap = 'https://api.coinmarketcap.com/v1/ticker/?convert=' + translate + '&limit=' + limit;
   request(requestMap, function(error, response, body) {
     var info = JSON.parse(body);
 
@@ -74,7 +75,8 @@ function allCrypto() {
         perc_1h,
         perc_24h,
         perc_7d,
-        amount
+        amount,
+        translate
       }]
 
       // Writing out updated currencies
@@ -110,7 +112,7 @@ function status() {
 var j = schedule.scheduleJob('00 * * * * *', function() {
   // Refreshing all crypto information exactly on the minute
   // in order to sync with the API
-  allCrypto();
+  allCrypto(translate, limit);
 });
 
 client.on('message', msg => {
@@ -124,22 +126,17 @@ client.on('message', msg => {
     currencies = jsonfile.readFileSync(file);
     currencies.forEach(function(entry) {
 
-      // var emoji;
-      //
-      // var cryptoOld = entry.amount
-      //
-      // var cryptoNew;
-      //
-      // if (cryptoNew >= cryptoOld) {
-      //   emoji = ":chart_with_upwards_trend:";
-      // }
-      //    // if (cryptoNew < cryptoOld) {
-      //   emoji = ":chart_with_downwards_trend:";
-      // }
+      var emoji;
+
+      if (entry.perc_1h >= 0) {
+        emoji = ":chart_with_upwards_trend:";
+      } else {
+        emoji = ":chart_with_downwards_trend:";
+      }
 
       currencies_converted.push({
-        name: ":chart_with_upwards_trend:" + ' __' + entry.name + ':__',
-        value: 'Current exchange rate for ' + entry.name + '\n**' + entry.amount + ' ' + entry.translate + '!**',
+        name: emoji + ' __' + entry.name + ':__',
+        value: 'Current exchange rate for ' + entry.symbol + '\n**' + entry.amount + ' ' + entry.translate + '!**',
         inline: true
 
       });
