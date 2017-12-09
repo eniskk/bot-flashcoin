@@ -138,7 +138,7 @@ client.on('message', msg => {
 
       currencies_converted.push({
         name: emoji + ' __' + entry.name + ':__',
-        value: 'Current exchange for ' + entry.symbol + ':\n**' + entry.amount + ' ' + entry.translate + '** (' + indicator +  entry.perc_24h + '% last day)',
+        value: 'Current exchange for ' + entry.symbol + ':\n**' + entry.amount + ' ' + entry.translate + '** (' + indicator +  entry.perc_24h + '% in 24h)',
         inline: true
 
       });
@@ -154,7 +154,7 @@ client.on('message', msg => {
       //title: "",
       description: '\n» Data gets updated **every minute**.\n» Source code available on **[GitHub](https://github.com/4dams)**!',
       footer: {
-        text: 'Source code on GitHub.com/4dams | CryptoCurrency Bot @ ' + moment().format('LTS'),
+        text: 'Via "/crypto" | CryptoCurrency Bot @ ' + moment().format('LTS'),
         icon_url: client.user.avatarURL
       },
       fields: currencies_converted,
@@ -163,6 +163,7 @@ client.on('message', msg => {
     console.log('| Crypto status requested                            |');
     console.log('|----------------------------------------------------|');
 
+    msg.reply('[<@' + msg.author.id + '>] Here are your requested exchange rates!')
     msg.channel.send({
       embed
     });
