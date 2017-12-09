@@ -89,40 +89,6 @@ function allCrypto() {
   });
 }
 
-function requestCrypto(crypto, translate, amount) {
-  var requestMap = 'https://min-api.cryptocompare.com/data/price?fsym=' + crypto + '&tsyms=' + translate;
-  request(requestMap, function(error, response, body) {
-    var info = JSON.parse(body);
-
-    // Reading in current currencies
-    var currencies = jsonfile.readFileSync(file);
-
-    // Removing previous crypto data from list
-    var temp_currencies = [];
-    for (var i in currencies)
-      if (currencies[i].name != crypto)
-        temp_currencies[temp_currencies.length] = currencies[i];
-    currencies = temp_currencies;
-
-    // Adding new crypto data to list
-    var name = crypto;
-    var amount = info[translate];
-    currencies = [...currencies, {
-      name,
-      translate,
-      amount
-    }]
-
-    // Writing out updated currencies
-    jsonfile.writeFileSync(file, currencies, {
-      spaces: 2
-    });
-
-    //console.log(crypto + ': ' + info[translate] + " " + translate)
-    sortCrypto();
-  });
-}
-
 function sortCrypto() {
 
   var currencies = jsonfile.readFileSync(file);
@@ -138,8 +104,7 @@ function sortNumber(a, b) {
 }
 
 function status() {
-  //client.user.setGame('Write "/crypto" to get started!');
-
+  client.user.setGame('Write "/crypto" to get started!');
 }
 
 var j = schedule.scheduleJob('00 * * * * *', function() {
