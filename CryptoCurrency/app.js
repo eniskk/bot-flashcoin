@@ -147,12 +147,13 @@ client.on('message', msg => {
 
     var embed = {
       color: 0xFFFFFF,
-      author: {
-        name: "Current Crypto Currency Exchange Rates",
-        icon_url: 'https://i.4da.ms/Bitcoin-icon.png'
-      },
-      //title: "",
-      description: '\n» Data gets updated **every minute**.\n» Source code available on **[GitHub](https://github.com/4dams)**!',
+      // author: {
+      //   name: "Current Crypto Currency Exchange Rates",
+      //   icon_url: 'https://i.4da.ms/Bitcoin-icon.png'
+      // },
+      title: "Crypto Currency Exchange Rates",
+      url: "https://crypto.4da.ms/",
+      description: '\n» Data gets updated **every minute**.\n» Source code and more: **[crypto.4da.ms](https://crypto.4da.ms)**!',
       footer: {
         text: 'Via "/crypto" | CryptoCurrency Bot @ ' + moment().format('LTS'),
         icon_url: client.user.avatarURL
@@ -163,7 +164,7 @@ client.on('message', msg => {
     console.log('| Crypto status requested                            |');
     console.log('|----------------------------------------------------|');
 
-    msg.reply('[<@' + msg.author.id + '>] Here are your requested exchange rates!')
+    msg.channel.send('[<@' + msg.author.id + '>] Here are your requested exchange rates!')
     msg.channel.send({
       embed
     });
