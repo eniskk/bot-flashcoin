@@ -160,7 +160,7 @@ client.on('message', msg => {
 
             currencies_converted.push({
               name: emoji + ' __' + entry.name + ':__',
-              value: 'Current exchange for ' + entry.symbol + ':\n**' + entry[translated_currency] + ' ' + translate + '** (' + indicator +  entry.percent_change_24h + '% in 24h)',
+              value: 'Current exchange for ' + entry.symbol + ':\n**' + entry[translated_currency] + ' ' + translate + '** (' + indicator + entry.percent_change_24h + '% in 24h)',
               inline: true
             });
 
@@ -212,7 +212,7 @@ client.on('message', msg => {
 
           currencies_converted.push({
             name: emoji + ' __' + entry.name + ':__',
-            value: 'Current exchange for ' + entry.symbol + ':\n**' + entry.amount + ' ' + entry.translate + '** (' + indicator +  entry.perc_24h + '% in 24h)',
+            value: 'Current exchange for ' + entry.symbol + ':\n**' + entry.amount + ' ' + entry.translate + '** (' + indicator + entry.perc_24h + '% in 24h)',
             inline: true
 
           });
