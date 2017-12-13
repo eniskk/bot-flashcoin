@@ -108,13 +108,24 @@ function sortNumber(a, b) {
 }
 
 function status() {
-  client.user.setGame('Write "/crypto" to get started!');
+
+  var currencies = jsonfile.readFileSync(currencydb);
+
+  for (var i in currencies) {
+    if (currencies[i].name == "Bitcoin") {
+      client.user.setGame(currencies[i].symbol + ' @ ' + currencies[i].amount + '€ (' + currencies[i].perc_24h + '% in last 24h)');
+    }
+  }
+
+  //client.user.setGame('Write "/crypto" to get started!');
 }
 
 var j = schedule.scheduleJob('00 * * * * *', function() {
   // Refreshing all crypto information exactly on the minute
   // in order to sync with the API
   allCrypto(translate, limit);
+  // Also updating status at the same time
+  status();
 });
 
 client.on('message', msg => {
@@ -158,9 +169,11 @@ client.on('message', msg => {
 
             var amount_rounded = Math.round(entry[translated_currency] * 100) / 100;
 
+            // I should probably sort the currencies here, but cba atm, there's more important stuff waiting
+
             currencies_converted.push({
               name: emoji + ' __' + entry.name + ':__',
-              value: 'Current exchange for ' + entry.symbol + ':\n**' + entry[translated_currency] + ' ' + translate + '** (' + indicator + entry.percent_change_24h + '% in 24h)',
+              value: 'Current exchange for ' + entry.symbol + ':\n**' + amount_rounded + ' ' + translate + '** (' + indicator + entry.percent_change_24h + '% in 24h)',
               inline: true
             });
 
