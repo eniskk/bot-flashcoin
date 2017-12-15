@@ -182,12 +182,13 @@ client.on('message', msg => {
         // Starting the inital request
         request(requestMap, function(error, response, body) {
 
-          //
+          // Parsing the information again
           var info = JSON.parse(body);
-          var currencies_special = info;
 
+          //
           info.forEach(function(entry) {
 
+            // Adding a little gimmick, an emoji showing if a currency went up or down in the last 24h
             var emoji;
 
             if (entry.percent_change_24h >= 0) {
@@ -198,9 +199,10 @@ client.on('message', msg => {
               indicator = '';
             }
 
+            // Rounding the currencies' exchange rates
             var amount_rounded = Math.round(entry[translated_currency] * 100) / 100;
 
-            // I should probably sort the currencies here, but cba atm, there's more important stuff waiting
+            // Sort process missing here
 
             currencies_converted.push({
               name: emoji + ' __' + entry.name + ':__',
